@@ -10,7 +10,7 @@ namespace Gas
       {
          dates.Sort((a, b) => a.CompareTo(b));
 
-         var plannedStart = new PlannedStart { StartTime = DateTime.MinValue, Count = 0 };
+         IPlannedStart plannedStart = new PlannedStart { StartTime = DateTime.MinValue, Count = 0 };
 
          // check if dates no items then return early
          if (dates.Count == 0)
@@ -18,27 +18,24 @@ namespace Gas
             return plannedStart;
          }
 
-         var requiredNumberInFirstWeek = requiredDays;
-
-         var startOfFirstWeek = dates[0];
+         DateTime startOfFirstWeek = dates[0];
          // add a week
-         var startOfSecondWeek = startOfFirstWeek.AddMilliseconds(7 * 24 * 60 * 60 * 1000);
+         DateTime startOfSecondWeek = startOfFirstWeek.AddDays(7);
 
-         var countsForFirstWeek = dates
-            .Where(x => x > startOfFirstWeek && x < startOfFirstWeek.AddMilliseconds(7 * 24 * 60 * 60 * 1000)) // add a week
-            .Count()
-            ;
+         int countsForFirstWeek = DateCount(dates, startOfFirstWeek, startOfSecondWeek);
 
-         var countsForSecondWeek = dates
-            .Where(x => x > startOfSecondWeek && x < startOfSecondWeek.AddMilliseconds(7 * 24 * 60 * 60 * 1000)) // add a week
-            .Count()
-            ;
+         int countsForSecondWeek = DateCount(dates, startOfSecondWeek, startOfSecondWeek.AddDays(7)); // add a week
 
-         if (countsForSecondWeek > countsForFirstWeek && countsForSecondWeek >= requiredNumberInFirstWeek)
+         if (countsForSecondWeek > countsForFirstWeek && countsForSecondWeek >= requiredDays)
          {
             plannedStart = new PlannedStart { StartTime = startOfSecondWeek, Count = countsForSecondWeek };
          }
          return plannedStart;
+      }
+
+      private int DateCount(List<DateTime> dates, DateTime startDate, DateTime endDate)
+      {
+         return dates.Where(x => x > startDate && x < endDate).Count();
       }
    }
 }

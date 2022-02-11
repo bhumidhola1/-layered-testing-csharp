@@ -10,10 +10,10 @@ namespace Gas
       public void Empty()
       {
          // arrange
-         var calculator = new LegacyCalculator();
+         LegacyCalculator calculator = new LegacyCalculator();
 
          // act
-         var result = calculator.Calculate(new List<DateTime>());
+         IPlannedStart result = calculator.Calculate(new List<DateTime>());
 
          // assert
          Assert.AreEqual(DateTime.MinValue, result.StartTime);
@@ -24,11 +24,11 @@ namespace Gas
       public void WithOneDate()
       {
          // arrange
-         var calculator = new LegacyCalculator();
-         var dates = new List<DateTime> { new DateTime() };
+         LegacyCalculator calculator = new LegacyCalculator();
+         List<DateTime> dates = new List<DateTime> { new DateTime() };
 
          // act
-         var result = calculator.Calculate(dates);
+         IPlannedStart result = calculator.Calculate(dates);
 
          // assert
          Assert.AreEqual(DateTime.MinValue, result.StartTime);
@@ -39,17 +39,17 @@ namespace Gas
       public void WithManyDates()
       {
          // arrange
-         var calculator = new LegacyCalculator();
-         var dates = new List<DateTime> {
+         LegacyCalculator calculator = new LegacyCalculator();
+         List<DateTime> dates = new List<DateTime> {
             new DateTime(2018, 1, 1),
             new DateTime(2018, 1, 2),
             new DateTime(2018, 1, 10),
             new DateTime(2018, 1, 11),
-            new DateTime(2018, 1, 12),
+            new DateTime(2018, 1, 12)
          };
 
          // act
-         var result = calculator.Calculate(dates);
+         IPlannedStart result = calculator.Calculate(dates);
 
          // assert
          Assert.AreEqual(new DateTime(2018, 1, 8), result.StartTime);
