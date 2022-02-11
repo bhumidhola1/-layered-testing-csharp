@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <Version>0.9.772.1958</Version>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+  </PropertyGroup>
+</Project>
